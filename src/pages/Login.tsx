@@ -4,17 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Search, X } from "lucide-react";
 
 const Login = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-4 text-center">
-          <div className="flex items-center justify-center space-x-1">
-            <Search className="h-8 w-8" />
-            <X className="h-8 w-8 text-red-500" />
-            <span className="text-2xl font-bold">FAKE NEWS</span>
+          <div className="flex items-center justify-center">
+            <img src="/fake-news-logo.png" alt="Fake News Logo" className="h-16 w-16" />
           </div>
           <CardTitle className="text-2xl font-bold">Bem-vindo de volta!</CardTitle>
           <CardDescription>

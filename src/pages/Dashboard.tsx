@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,8 +18,17 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [newsInput, setNewsInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [chatHistory, setChatHistory] = useState<ChatItem[]>([]);
+  const [chatHistory, setChatHistory] = useState<ChatItem[]>(() => {
+    // Initialize chat history from localStorage
+    const savedHistory = localStorage.getItem("fake-news-chat-history");
+    return savedHistory ? JSON.parse(savedHistory) : [];
+  });
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+
+  // Save chat history to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("fake-news-chat-history", JSON.stringify(chatHistory));
+  }, [chatHistory]);
 
   const handleAnalyze = (text: string) => {
     if (!text.trim()) {
@@ -47,6 +56,7 @@ const Dashboard = () => {
 
       setChatHistory((prev) => [newChat, ...prev]);
       setCurrentChatId(newChat.id); // Set current chat to the newly analyzed one
+      setNewsInput(""); // Clear input after analysis
 
       navigate("/analysis-result", { state: newChat });
     }, 2000); // Simulate 2-second analysis time
@@ -132,7 +142,7 @@ const Dashboard = () => {
             <Button
               className="w-full"
               onClick={() => handleAnalyze(newsInput)}
-              disabled={isLoading}
+              disabled={isLoading || !newsInput.trim()}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Analisar a notícia digitada
